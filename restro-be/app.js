@@ -11,6 +11,13 @@ connectDB();
 const app = express();
 const PORT = config.port;
 
+app.use(
+  cors({
+    credentials: true,
+    origin: config.corsOrigin,
+  }),
+);
+
 // Middleware to parse JSON bodies
 app.use(express.json());
 //root route for testing
