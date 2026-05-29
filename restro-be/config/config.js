@@ -6,4 +6,6 @@ module.exports = Object.freeze({
   nodeEnv: process.env.NODE_ENV || "development",
   accessTokenSecret: process.env.JWT_SECRET,
   corsOrigin: process.env.CORS_ORIGIN,
+  razorpayKeyId: process.env.RAZORPAY_KEY_ID,
+  razorpayKeySecret: process.env.RAZORPAY_KEY_SECRET,
 });

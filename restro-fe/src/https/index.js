@@ -20,3 +20,14 @@ export const login = (data) => api.post("/api/user/login", data);
 export const logout = () => api.post("/api/user/logout");
 export const register = (data) => api.post("/api/user/register", data);
 export const getUserData = (data) => api.get("/api/user");
+
+//tables endpoints
+export const addTable = (data) => api.post("/api/table", data);
+export const getTables = () => api.get("/api/table");
+export const updateTable = (id, data) => api.put(`/api/table/${id}`, data);
+
+// payment endpoints
+export const createOrderRazorpay = (data) =>
+  api.post("/api/payment/create-order", data);
+export const verifyPaymentRazorpay = (data) =>
+  api.post("/api/payment/verify-payment", data);

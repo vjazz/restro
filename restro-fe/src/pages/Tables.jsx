@@ -3,8 +3,8 @@ import BottomNav from "../components/shared/BottomNav";
 import BackButton from "../components/shared/BackButton";
 import { tables } from "../constants";
 import TableCard from "../components/table/TableCard";
-// import { keepPreviousData, useQuery } from "@tanstack/react-query";
-// import { getTables } from "../https";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { getTables } from "../https";
 
 const Tables = () => {
   const [status, setStatus] = useState("all");
@@ -13,19 +13,19 @@ const Tables = () => {
     document.title = "POS | Tables";
   }, []);
 
-  //   const { data: resData, isError } = useQuery({
-  //     queryKey: ["tables"],
-  //     queryFn: async () => {
-  //       return await getTables();
-  //     },
-  //     placeholderData: keepPreviousData,
-  //   });
+  const { data: resData, isError } = useQuery({
+    queryKey: ["tables"],
+    queryFn: async () => {
+      return await getTables();
+    },
+    placeholderData: keepPreviousData,
+  });
 
-  //   if(isError) {
-  //     enqueueSnackbar("Something went wrong!", { variant: "error" })
-  //   }
+  if (isError) {
+    enqueueSnackbar("Something went wrong!", { variant: "error" });
+  }
 
-  //   console.log(resData);
+  console.log(resData);
 
   return (
     <section className="bg-[#1f1f1f]  h-[calc(100vh-5rem)] overflow-hidden">
@@ -57,7 +57,7 @@ const Tables = () => {
       </div>
 
       <div className="grid grid-cols-5 gap-3 px-16 py-4 overflow-y-scroll scrollbar-hide">
-        {tables?.map((table) => {
+        {resData?.data?.data.map((table) => {
           return (
             <TableCard
               key={table._id}

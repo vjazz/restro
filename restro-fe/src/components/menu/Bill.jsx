@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getTotalPrice } from "../../redux/slices/cartSlice";
-// import {
-//   addOrder,
-//   createOrderRazorpay,
-//   updateTable,
-//   verifyPaymentRazorpay,
-// } from "../../https/index";
-// import { enqueueSnackbar } from "notistack";
-// import { useMutation } from "@tanstack/react-query";
+import {
+  // addOrder,
+  createOrderRazorpay,
+  // updateTable,
+  verifyPaymentRazorpay,
+} from "../../https/index";
+import { enqueueSnackbar } from "notistack";
+import { useMutation } from "@tanstack/react-query";
 import { removeAllItems } from "../../redux/slices/cartSlice";
 import { removeCustomer } from "../../redux/slices/customerSlice";
 // import Invoice from "../invoice/Invoice";
@@ -33,20 +33,7 @@ const Bill = () => {
   const customerData = useSelector((state) => state.customer);
   const cartData = useSelector((state) => state.cart);
   const total = useSelector(getTotalPrice);
-  // const customerData = {
-  //   customerName: "John Doe",
-  //   customerPhone: "1234567890",
-  //   guests: 4,
-  //   table: { tableId: "1A" },
-  // };
-  // const cartData = [
-  //   { id: 1, name: "Pizza", quantity: 2, price: 200 },
-  //   { id: 2, name: "Burger", quantity: 1, price: 100 },
-  // ];
-  // const total = cartData.reduce(
-  //   (acc, item) => acc + item.quantity * item.price,
-  //   0,
-  // );
+
   const taxRate = 5.25;
   const tax = (total * taxRate) / 100;
   const totalPriceWithTax = total + tax;

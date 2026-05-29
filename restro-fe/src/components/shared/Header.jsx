@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { logout } from "../../https";
 import { removeUser } from "../../redux/slices/userSlice";
+import { MdDashboard } from "react-icons/md";
 
 const Header = () => {
   const userData = useSelector((state) => state.user);
@@ -47,6 +48,14 @@ const Header = () => {
       </div>
       {/* User Login Details  */}
       <div className="flex items-center gap-4">
+        {userData.role.toLowerCase() === "admin" && (
+          <div
+            onClick={() => navigate("/dashboard")}
+            className="bg-gray-700 rounded-full p-2 cursor-pointer"
+          >
+            <MdDashboard className="text-2xl" />
+          </div>
+        )}
         <div className="bg-gray-700 rounded-full p-2 cursor-pointer">
           <FaBell className="text-2xl" />
         </div>
