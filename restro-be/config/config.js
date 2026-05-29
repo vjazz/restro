@@ -5,5 +5,5 @@ module.exports = Object.freeze({
   databaseURI: process.env.MONGODB_URI || "mongodb://localhost:27017/restro-db",
   nodeEnv: process.env.NODE_ENV || "development",
   accessTokenSecret: process.env.JWT_SECRET,
-  corsOrigin: process.env.CORS_ORIGIN || "http://localhost:3000",
+  corsOrigin: process.env.CORS_ORIGIN,
 });

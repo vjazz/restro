@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { login } from "../../https/index";
 import { enqueueSnackbar } from "notistack";
-// import { useDispatch } from "react-redux";
-// import { setUser } from "../../redux/slices/userSlice";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../redux/slices/userSlice";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const navigate = useNavigate();
-  //   const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     email: "",
     password: "",

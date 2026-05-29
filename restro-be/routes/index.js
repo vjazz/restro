@@ -5,7 +5,7 @@ const orderRoute = require("./orderRoute");
 const tableRoute = require("./tableRoute");
 
 // Mount user routes
-router.use("/users", userRoute);
+router.use("/user", userRoute);
 router.use("/orders", orderRoute);
 router.use("/tables", tableRoute);
 

@@ -41,6 +41,7 @@ const registerUser = async (req, res, next) => {
 
 const loginUser = async (req, res, next) => {
   try {
+    console.log("Login user controller called");
     const { email, password } = req.body;
     console.log("Login user controller called", req.body);
     // Basic validation
@@ -94,8 +95,22 @@ const getUserData = async (req, res, next) => {
   }
 };
 
+const logoutUser = async (req, res, next) => {
+  try {
+    res.clearCookie("accessToken", {
+      httpOnly: true,
+      secure: true, // Set to true in production
+      sameSite: "none", // Adjust based on your frontend domain
+    });
+    res.status(200).json({ success: true, message: "Logout successful" });
+  } catch (error) {
+    next(error); // Pass the error to the global error handler
+  }
+};
+
 module.exports = {
   registerUser,
   loginUser,
   getUserData,
+  logoutUser,
 };

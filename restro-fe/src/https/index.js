@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: import.meta.env.BACKEND_URL,
+  baseURL: import.meta.env.VITE_BACKEND_URL,
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
@@ -9,7 +9,14 @@ const api = axios.create({
   },
 });
 
+console.log("API base URL:", import.meta.env.VITE_BACKEND_URL);
+
+// console.log(
+//   "API base URL: process.env.BACKEND_URL",
+//   process.env.VITE_BACKEND_URL,
+// );
 // API Endpoints
 export const login = (data) => api.post("/api/user/login", data);
+export const logout = () => api.post("/api/user/logout");
 export const register = (data) => api.post("/api/user/register", data);
 export const getUserData = (data) => api.get("/api/user");

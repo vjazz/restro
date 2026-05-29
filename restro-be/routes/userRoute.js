@@ -3,6 +3,7 @@ const {
   registerUser,
   loginUser,
   getUserData,
+  logoutUser,
 } = require("../controllers/userController");
 const isVerifiedUser = require("../middleware/tokenVerification");
 const router = express.Router();
@@ -15,8 +16,10 @@ const router = express.Router();
 
 router.post("/register", registerUser);
 router.post("/login", loginUser);
+
 // Example protected route
 router.use(isVerifiedUser); // Apply token verification middleware to all routes below
+router.post("/logout", logoutUser); // Add logout route
 router.get("/", getUserData);
 
 module.exports = router;

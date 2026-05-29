@@ -2,7 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 // @ts-expect-error: Allow side-effect CSS import without type declarations
 import "./index.css";
-import App from "./App.tsx";
+import App from "./App.jsx";
 import { Provider } from "react-redux";
 import store from "./redux/store.js";
 import { SnackbarProvider } from "notistack";

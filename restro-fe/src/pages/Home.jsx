@@ -13,7 +13,7 @@ const Home = () => {
       {/* Left Side */}
       <div className="flex-3 bg-gray-100 h-full">
         <Greetings />
-        <div className="flex items-center justify-around mt-8 px-8- gap-3 w-full">
+        <div className="flex items-center justify-around mt-8 px-8 gap-3 w-full">
           <MiniCard
             title="Total Earnings"
             icon={<BsCashCoin />}

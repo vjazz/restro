@@ -5,21 +5,25 @@ const config = require("./config/config");
 const globalErrorHandler = require("./middleware/globalErrorHandler");
 const createHttpError = require("http-errors");
 const routes = require("./routes");
+const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
 // Connect to MongoDB
 connectDB();
 const app = express();
+
 const PORT = config.port;
 
 app.use(
   cors({
     credentials: true,
-    origin: config.corsOrigin,
+    origin: [config.corsOrigin],
   }),
 );
 
 // Middleware to parse JSON bodies
 app.use(express.json());
+app.use(cookieParser());
 //root route for testing
 // app.get("/", (req, res) => {
 //   //   const error = createHttpError(400, "Bad Request Example");
