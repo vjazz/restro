@@ -7,7 +7,7 @@ const paymentRoute = require("./paymentRoute");
 
 // Mount user routes
 router.use("/user", userRoute);
-router.use("/orders", orderRoute);
+router.use("/order", orderRoute);
 router.use("/table", tableRoute);
 router.use("/payment", paymentRoute);
 

@@ -2,16 +2,16 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getTotalPrice } from "../../redux/slices/cartSlice";
 import {
-  // addOrder,
+  addOrder,
   createOrderRazorpay,
-  // updateTable,
+  updateTable,
   verifyPaymentRazorpay,
 } from "../../https/index";
 import { enqueueSnackbar } from "notistack";
 import { useMutation } from "@tanstack/react-query";
 import { removeAllItems } from "../../redux/slices/cartSlice";
 import { removeCustomer } from "../../redux/slices/customerSlice";
-// import Invoice from "../invoice/Invoice";
+import Invoice from "../invoice/Invoice";
 
 function loadScript(src) {
   return new Promise((resolve) => {
@@ -81,7 +81,11 @@ const Bill = () => {
           description: "Secure Payment for Your Meal",
           order_id: data.order.id,
           handler: async function (response) {
-            const verification = await verifyPaymentRazorpay(response);
+            const verification = await verifyPaymentRazorpay(response, {
+              email: customerData.customerEmail,
+              contact: customerData.customerPhone,
+            });
+
             console.log(verification);
             enqueueSnackbar(verification.data.message, { variant: "success" });
 
@@ -145,50 +149,50 @@ const Bill = () => {
         table: customerData.table.tableId,
         paymentMethod: paymentMethod,
       };
-      // orderMutation.mutate(orderData);
+      orderMutation.mutate(orderData);
     }
   };
 
-  // const orderMutation = useMutation({
-  //   mutationFn: (reqData) => addOrder(reqData),
-  //   onSuccess: (resData) => {
-  //     const { data } = resData.data;
-  //     console.log(data);
+  const orderMutation = useMutation({
+    mutationFn: (reqData) => addOrder(reqData),
+    onSuccess: (resData) => {
+      const { data } = resData.data;
+      console.log(data);
 
-  //     setOrderInfo(data);
+      setOrderInfo(data);
 
-  //     // Update Table
-  //     const tableData = {
-  //       status: "Booked",
-  //       orderId: data._id,
-  //       tableId: data.table,
-  //     };
+      // Update Table
+      const tableData = {
+        status: "Booked",
+        orderId: data._id,
+        tableId: data.table,
+      };
 
-  //     setTimeout(() => {
-  //       tableUpdateMutation.mutate(tableData);
-  //     }, 1500);
+      setTimeout(() => {
+        tableUpdateMutation.mutate(tableData);
+      }, 1500);
 
-  //     enqueueSnackbar("Order Placed!", {
-  //       variant: "success",
-  //     });
-  //     setShowInvoice(true);
-  //   },
-  //   onError: (error) => {
-  //     console.log(error);
-  //   },
-  // });
+      enqueueSnackbar("Order Placed!", {
+        variant: "success",
+      });
+      setShowInvoice(true);
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
 
-  // const tableUpdateMutation = useMutation({
-  //   mutationFn: (reqData) => updateTable(reqData),
-  //   onSuccess: (resData) => {
-  //     console.log(resData);
-  //     dispatch(removeCustomer());
-  //     dispatch(removeAllItems());
-  //   },
-  //   onError: (error) => {
-  //     console.log(error);
-  //   },
-  // });
+  const tableUpdateMutation = useMutation({
+    mutationFn: (reqData) => updateTable(reqData),
+    onSuccess: (resData) => {
+      console.log(resData);
+      dispatch(removeCustomer());
+      dispatch(removeAllItems());
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
 
   return (
     <>
@@ -243,9 +247,9 @@ const Bill = () => {
         </button>
       </div>
 
-      {/* {showInvoice && (
+      {showInvoice && (
         <Invoice orderInfo={orderInfo} setShowInvoice={setShowInvoice} />
-      )} */}
+      )}
     </>
   );
 };

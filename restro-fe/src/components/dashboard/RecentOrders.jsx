@@ -8,67 +8,43 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { enqueueSnackbar } from "notistack";
-// import { getOrders, updateOrderStatus } from "../../https/index";
+import { getOrders, updateOrderStatus } from "../../https/index";
 import { formatDateAndTime } from "../../utils";
 
 const RecentOrders = () => {
   const queryClient = useQueryClient();
   const handleStatusChange = ({ orderId, orderStatus }) => {
     console.log(orderId);
-    // orderStatusUpdateMutation.mutate({orderId, orderStatus});
+    orderStatusUpdateMutation.mutate({ orderId, orderStatus });
   };
 
-  // const orderStatusUpdateMutation = useMutation({
-  //   mutationFn: ({orderId, orderStatus}) => updateOrderStatus({orderId, orderStatus}),
-  //   onSuccess: (data) => {
-  //     enqueueSnackbar("Order status updated successfully!", { variant: "success" });
-  //     queryClient.invalidateQueries(["orders"]); // Refresh order list
-  //   },
-  //   onError: () => {
-  //     enqueueSnackbar("Failed to update order status!", { variant: "error" });
-  //   }
-  // })
-
-  // const { data: resData, isError } = useQuery({
-  //   queryKey: ["orders"],
-  //   queryFn: async () => {
-  //     return await getOrders();
-  //   },
-  //   placeholderData: keepPreviousData,
-  // });
-
-  const resData = {
-    data: {
-      data: [
-        // {
-        //   _id: "order1",
-        //   orderDate: new Date(),
-        //   customerDetails: { name: "John Doe" },
-        //   orderStatus: "In Progress",
-        //   items: [{}, {}, {}],
-        //   table: { tableNo: 5 },
-        //   bills: { totalWithTax: 500 },
-        //   paymentMethod: "Cash",
-        // },
-        // {
-        //   _id: "order2",
-        //   orderDate: new Date(),
-        //   customerDetails: { name: "Jane Smith" },
-        //   orderStatus: "Ready",
-        //   items: [{}, {}],
-        //   table: { tableNo: 3 },
-        //   bills: { totalWithTax: 300 },
-        //   paymentMethod: "Card",
-        // },
-      ],
+  const orderStatusUpdateMutation = useMutation({
+    mutationFn: ({ orderId, orderStatus }) =>
+      updateOrderStatus({ orderId, orderStatus }),
+    onSuccess: (data) => {
+      enqueueSnackbar("Order status updated successfully!", {
+        variant: "success",
+      });
+      queryClient.invalidateQueries(["orders"]); // Refresh order list
     },
-  };
+    onError: () => {
+      enqueueSnackbar("Failed to update order status!", { variant: "error" });
+    },
+  });
+
+  const { data: resData, isError } = useQuery({
+    queryKey: ["orders"],
+    queryFn: async () => {
+      return await getOrders();
+    },
+    placeholderData: keepPreviousData,
+  });
 
   if (isError) {
     enqueueSnackbar("Something went wrong!", { variant: "error" });
   }
 
-  // console.log(resData.data.data);
+  console.log(resData.data.data);
 
   return (
     <div className="container mx-auto bg-[#262626] p-4 rounded-lg">

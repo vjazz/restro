@@ -26,6 +26,12 @@ export const addTable = (data) => api.post("/api/table", data);
 export const getTables = () => api.get("/api/table");
 export const updateTable = (id, data) => api.put(`/api/table/${id}`, data);
 
+// orders endpoints
+export const addOrder = (data) => api.post("/api/order", data);
+export const getOrders = () => api.get("/api/order");
+export const updateOrderStatus = (id, data) =>
+  api.put(`/api/order/${id}`, data);
+
 // payment endpoints
 export const createOrderRazorpay = (data) =>
   api.post("/api/payment/create-order", data);

@@ -1,6 +1,7 @@
 const razorpay = require("../config/razorpay");
 const config = require("../config/config");
 const crypto = require("crypto");
+const Payment = require("../models/paymentModel");
 
 const createOrder = async (req, res, next) => {
   try {
@@ -25,8 +26,13 @@ const createOrder = async (req, res, next) => {
 
 const verifyPayment = async (req, res, next) => {
   try {
-    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
-      req.body;
+    const {
+      razorpay_order_id,
+      razorpay_payment_id,
+      razorpay_signature,
+      email,
+      contact,
+    } = req.body;
 
     const body = razorpay_order_id + "|" + razorpay_payment_id;
 
@@ -44,11 +50,55 @@ const verifyPayment = async (req, res, next) => {
       });
     }
 
+    // Fetch Payment Details in Backend using Razorpay Payment ID
+    const payment = await razorpay.payments.fetch(razorpay_payment_id);
+
+    console.log("payment Details ", payment);
+
+    // Payment Information
+    // const paymentDetails = {
+    //   paymentId: payment.id,
+    //   orderId: payment.order_id,
+
+    //   amount: payment.amount / 100,
+    //   currency: payment.currency,
+
+    //   status: payment.status,
+
+    //   method: payment.method, // card, upi, wallet
+
+    //   captured: payment.captured,
+
+    //   email: payment.email,
+    //   contact: payment.contact,
+
+    //   createdAt: new Date(payment.created_at * 1000),
+
+    //   bank: payment.bank,
+    //   wallet: payment.wallet,
+    //   vpa: payment.vpa,
+    // };
+
+    // console.log(paymentDetails);
+
     // Save payment in DB here
+    const newPayment = new Payment({
+      paymentId: payment.id,
+      orderId: payment.order_id,
+      amount: payment.amount / 100, // convert back to rupees
+      currency: payment.currency,
+      status: payment.status,
+      method: payment.method,
+      createdAt: new Date(payment.created_at * 1000), // convert to milliseconds
+      // TODO: check if email and contact are correct or not, if not use the ones from request body, may be in webhook I won't get it
+      email: payment.email,
+      contact: payment.contact,
+    });
+    await newPayment.save();
 
     res.status(200).json({
       success: true,
-      message: "Payment verified successfully",
+      message: "Payment verified and saved successfully",
     });
   } catch (error) {
     res.status(500).json({

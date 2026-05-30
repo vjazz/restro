@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import BottomNav from "../components/shared/BottomNav";
-import BackButton from "../components/shared/BackButton";
 import OrderCard from "../components/orders/OrderCard";
-// import { keepPreviousData, useQuery } from "@tanstack/react-query";
-// import { getOrders } from "../https/index";
-// import { enqueueSnackbar } from "notistack";
+import BackButton from "../components/shared/BackButton";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { getOrders } from "../https/index";
+import { enqueueSnackbar } from "notistack";
 
 const Orders = () => {
   const [status, setStatus] = useState("all");
@@ -13,17 +13,17 @@ const Orders = () => {
     document.title = "POS | Orders";
   }, []);
 
-  // const { data: resData, isError } = useQuery({
-  //   queryKey: ["orders"],
-  //   queryFn: async () => {
-  //     return await getOrders();
-  //   },
-  //   placeholderData: keepPreviousData
-  // })
+  const { data: resData, isError } = useQuery({
+    queryKey: ["orders"],
+    queryFn: async () => {
+      return await getOrders();
+    },
+    placeholderData: keepPreviousData,
+  });
 
-  // if(isError) {
-  //   enqueueSnackbar("Something went wrong!", {variant: "error"})
-  // }
+  if (isError) {
+    enqueueSnackbar("Something went wrong!", { variant: "error" });
+  }
 
   return (
     <section className="bg-[#1f1f1f]  h-[calc(100vh-5rem)] overflow-hidden">
@@ -62,22 +62,16 @@ const Orders = () => {
         </div>
       </div>
 
-      {/* <div className="grid grid-cols-3 gap-3 px-16 py-4 overflow-y-scroll scrollbar-hide">
-        {
-          resData?.data.data.length > 0 ? (
-            resData.data.data.map((order) => {
-              return <OrderCard key={order._id} order={order} />
-            })
-          ) : <p className="col-span-3 text-gray-500">No orders available</p>
-        }
-      </div> */}
-      <div className="flex flex-wrap gap-3 px-16 py-4 overflow-y-scroll scrollbar-hide">
-        <OrderCard key={"1"} />
-        <OrderCard key={"2"} />
-        <OrderCard key={"3"} />
-        <OrderCard key={"4"} />
-        <OrderCard key={"5"} />
+      <div className="grid grid-cols-3 gap-3 px-16 py-4 overflow-y-scroll scrollbar-hide">
+        {resData?.data.data.length > 0 ? (
+          resData.data.data.map((order) => {
+            return <OrderCard key={order._id} order={order} />;
+          })
+        ) : (
+          <p className="col-span-3 text-gray-500">No orders available</p>
+        )}
       </div>
+
       <BottomNav />
     </section>
   );

@@ -83,7 +83,7 @@ const loginUser = async (req, res, next) => {
 const getUserData = async (req, res, next) => {
   try {
     const userId = req.user._id; // Assuming you have middleware to set req.user
-    console.log("Get user data controller called for userId:", req.user);
+    // console.log("Get user data controller called for userId:", req.user);
     const user = await User.findById(userId).select("-password");
     if (!user) {
       const error = createHttpError(404, "User not found");
